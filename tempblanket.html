@@ -4,23 +4,24 @@
 	<head>
 		<title> Temperature Blanket Pattern Generator </title>
 		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-		<script src="stuff.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<script src="tempblanket.js"></script>
 	</head>
 
 	<body>
-		<p> HELLO </p>
-		<form>
+		<p id="billboard"> HELLO </p>
+		<form id="form">
 			Start date: 
-			<input type="date" name="start">
+			<input type="date" id="start">
 			<br/>
 			End date: 
-			<input type="date" name="end">
+			<input type="date" id="end">
 			<br/>
 			Latitude: 
-			<input type="text" name="lat">
+			<input type="text" id="lat">
 			<br/>
 			Longitude: 
-			<input type="text" name="long">
+			<input type="text" id="long">
 			<br/>
 			<input type="submit">
 		</form>
