@@ -3,7 +3,7 @@ var data = [];
 var promises = [];
 
 var start = new Date(2018, 03, 12); // 3 --> April
-var end = new Date(2018, 04, 12);
+var end = new Date(2018, 03, 12);
 
 // Name of yarn color, lower end inclusive and higher end exclusive
 var colors = [
@@ -20,10 +20,25 @@ var colors = [
 	["Eggplant", 30, 40]
 ];
 
-$("#form").submit(function(event) {
-	console.log("hello");
-	alert("Handler for .submit() called.");
-	return false;
+$(function() {
+
+	$("#f").submit(function(event) {
+		event.preventDefault();
+		var start = $("#start").val() + "T00:00:00";
+		startDate = new Date(start);
+		var end = $("#end").val() + "T00:00:00";
+		var endDate = new Date(end);
+
+		if (startDate > endDate) {
+			alert("The start date cannot be later than the end date.");
+			document.getElementById('f').reset();
+		}
+		else if (endDate > Date.now()) {
+			alert("The dates cannot be in the future.");
+			document.getElementById('f').reset();
+		}
+
+	});
 });
 
 /*
@@ -38,7 +53,7 @@ for (var d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
 	+ ('0' + d.getDate()).slice(-2)
 	+ 'T00:00:00'
 	+ '?exclude=currently,minutely,hourly,alerts,flags';
-	
+
 	promises.push(axios.get(url));
 }
 
@@ -47,20 +62,20 @@ axios.all(promises)
 	results.forEach(function (response) {
 		var dateObj = new Date(response.data.daily.data[0].time * 1000);
 		var date = (dateObj.getMonth() + 1) + '/' + dateObj.getDate() + '/' + dateObj.getFullYear();
-		
+
 		var minTemp = response.data.daily.data[0].temperatureMin;
 		var maxTemp = response.data.daily.data[0].temperatureMax;
 		var avgTemp = (minTemp + maxTemp) / 2;
-		
+
 		var color = "";
-		
+
 		for (var i = 0; i < colors.length; i++) {
 			if ((maxTemp >= colors[i][1]) && (maxTemp < colors[i][2])) {
 				color = colors[i][0];
 				break;
 			}
 		}
-		
+
 		data.push([date, minTemp, maxTemp, avgTemp, color]);
 	})
 })
@@ -70,7 +85,7 @@ axios.all(promises)
             csv += row.join(',');
             csv += "\n";
     });
- 
+
     console.log(csv);
     var hiddenElement = document.createElement('a');
     hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
